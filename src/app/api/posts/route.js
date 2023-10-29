@@ -13,6 +13,7 @@ export const GET = async (req) => {
   const query = {
     take: POST_PER_PAGE,
     skip: POST_PER_PAGE * (page - 1),
+    orderBy: { createdAt: 'desc' },
     where: {
       ...(cat && { catSlug: cat }),
     },
@@ -23,7 +24,6 @@ export const GET = async (req) => {
       prisma.post.findMany(query),
       prisma.post.count({ where: query.where }),
     ]);
-    posts.reverse();
     return new NextResponse(JSON.stringify({ posts, count }, { status: 200 }));
   } catch (err) {
     console.log(err);
