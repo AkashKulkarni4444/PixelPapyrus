@@ -8,8 +8,10 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 
 const fetcher = async (url) => {
+  console.log(url);
   const res = await fetch(url);
   const data = await res.json();
+  console.log(data);
   if (!res.ok) {
     const error = new Error(data.message);
     throw error;
@@ -22,10 +24,9 @@ const Comments = ({ postSlug }) => {
   const { status } = useSession();
 
   const { data, mutate, isLoading } = useSWR(
-    `${process.env.NEXTAUTH_URL}/api/comments?postSlug=${postSlug}`,
+    `/api/comments?postSlug=${postSlug}`,
     fetcher
   );
-
   const [desc, setDesc] = useState("");
 
   const handleSubmit = async () => {
